@@ -7,7 +7,42 @@
 
   <!-- Style personnalisé -->
   <style>
+    .galerie {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.galerie img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.galerie img:hover {
+  transform: scale(1.05);
+}
     body {
+      <section id="galerie-champ">
+  <h2>Galerie du Champ</h2>
+  <div class="galerie">
+    <img src="https://via.placeholder.com/300x200?text=Champ+1" alt="Champ 1">
+    <img src="https://via.placeholder.com/300x200?text=Champ+2" alt="Champ 2">
+    <img src="https://via.placeholder.com/300x200?text=Champ+3" alt="Champ 3">
+  </div>
+</section>
+
+<section id="galerie-serre">
+  <h2>Galerie de la Serre</h2>
+  <div class="galerie">
+    <img src="https://via.placeholder.com/300x200?text=Serre+1" alt="Serre 1">
+    <img src="https://via.placeholder.com/300x200?text=Serre+2" alt="Serre 2">
+    <img src="https://via.placeholder.com/300x200?text=Serre+3" alt="Serre 3">
+  </div>
+</section>
       font-family: Arial, sans-serif;
       line-height: 1.6;
       margin: 0;
