@@ -16,6 +16,35 @@
       color: #333;
     }
 
+    /* Splash Screen (écran d’accueil) */
+    #splash {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #2c3e50;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 1s ease;
+    }
+
+    #splash img {
+      width: 150px;
+      animation: bounce 2s ease infinite;
+    }
+
+    /* Rebond logo et titre */
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-15px); }
+      60% { transform: translateY(-7px); }
+    }
+
+    header h1 {
+      animation: bounce 2s ease;
+      cursor: default;
+    }
+
     header {
       background-color: #2c3e50;
       color: white;
@@ -34,6 +63,12 @@
 
     h2 {
       color: #2c3e50;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    h2:hover {
+      transform: scale(1.05);
+      color: #ff4500;
     }
 
     .whatsapp-button {
@@ -46,11 +81,12 @@
       font-size: 1em;
       font-weight: bold;
       text-decoration: none;
-      transition: background-color 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .whatsapp-button:hover {
-      background-color: #1ebe5d;
+      transform: scale(1.1);
+      box-shadow: 0 0 10px #25D366;
     }
 
     #map {
@@ -58,7 +94,7 @@
       border-radius: 8px;
     }
 
-    /* Animation */
+    /* Animation fade-in */
     .fade-in {
       opacity: 0;
       transform: translateY(20px);
@@ -69,6 +105,16 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* Masquer le contenu au départ */
+    #main-content {
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    #main-content.visible {
+      opacity: 1;
+    }
   </style>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -76,48 +122,53 @@
 
 <body>
 
-  <header>
-    <h1 class="fade-in">Champ École</h1>
-  </header>
+  <!-- Splash screen -->
+  <div id="splash">
+    <img src="ton-Logo.png" alt="Logo" />
+  </div>
 
-  <section class="fade-in" id="presentation">
-    <h2 class="fade-in">Présentation</h2>
-    <p>
-      Le Champ École est une initiative portée par des étudiants engagés pour expérimenter des pratiques agricoles durables. Il sert de lieu d’apprentissage, d’expérimentation et de démonstration.
-    </p>
-  </section>
+  <!-- Contenu principal -->
+  <div id="main-content">
+    <header>
+      <h1>Champ École</h1>
+    </header>
 
-  <section class="fade-in" id="membres">
-    <h2 class="fade-in">Les Membres</h2>
-    <ul>
-      <li>Pierre - Chef de projet</li>
-      <li>Madjiguene - Responsable communication</li>
-      <li>Baye - Responsable technique</li>
-      <li>Massamba - Responsable partenariats</li>
-    </ul>
-  </section>
+    <section class="fade-in" id="presentation">
+      <h2 class="fade-in">Présentation</h2>
+      <p>
+        Le Champ École est une initiative portée par des étudiants engagés pour expérimenter des pratiques agricoles durables...
+      </p>
+    </section>
 
-  <section class="fade-in" id="serre">
-    <h2 class="fade-in">Le Projet de Serre Connectée</h2>
-    <p>
-      La serre du champ est connectée à des capteurs de température, d’humidité et d’irrigation automatique grâce à un Raspberry Pi et au système Home Assistant. Le tout est géré via une interface web simple à mettre à jour.
-    </p>
-    <p>
-      Ce projet évolue constamment et de nouvelles fonctionnalités seront ajoutées régulièrement.
-    </p>
-  </section>
+    <section class="fade-in" id="membres">
+      <h2 class="fade-in">Les Membres</h2>
+      <ul>
+        <li>Pierre - Chef de projet</li>
+        <li>Madjiguene - Responsable communication</li>
+        <li>Baye - Responsable technique</li>
+        <li>Massamba - Responsable partenariats</li>
+      </ul>
+    </section>
 
-  <section class="fade-in" id="carte">
-    <h2 class="fade-in">Localisation du Champ</h2>
-    <div id="map"></div>
-  </section>
+    <section class="fade-in" id="serre">
+      <h2 class="fade-in">Le Projet de Serre Connectée</h2>
+      <p>
+        La serre du champ est connectée à des capteurs de température, d’humidité...
+      </p>
+    </section>
 
-  <section class="fade-in" id="contact">
-    <h2 class="fade-in">Nous Contacter</h2>
-    <p>Tu veux en savoir plus ou collaborer avec nous ? N’hésite pas à nous écrire !</p>
-    <p><strong>Email :</strong> <a href="mailto:sunumbey@gmail.com">sunumbey@gmail.com</a></p>
-    <a href="https://wa.me/221777934229" target="_blank" class="whatsapp-button">Nous écrire sur WhatsApp</a>
-  </section>
+    <section class="fade-in" id="carte">
+      <h2 class="fade-in">Localisation du Champ</h2>
+      <div id="map"></div>
+    </section>
+
+    <section class="fade-in" id="contact">
+      <h2 class="fade-in">Nous Contacter</h2>
+      <p>Tu veux en savoir plus ou collaborer avec nous ?</p>
+      <p><strong>Email :</strong> <a href="mailto:sunumbey@gmail.com">sunumbey@gmail.com</a></p>
+      <a href="https://wa.me/221777934229" target="_blank" class="whatsapp-button">Nous écrire sur WhatsApp</a>
+    </section>
+  </div>
 
   <!-- Scripts -->
   <script>
@@ -139,7 +190,7 @@
         .openPopup();
     });
 
-    // Animation effet apparition
+    // Apparition des sections au scroll
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -149,6 +200,18 @@
     }, { threshold: 0.1 });
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Splash screen timeout
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('splash').style.opacity = 0;
+        document.getElementById('splash').style.pointerEvents = 'none';
+        document.getElementById('main-content').classList.add('visible');
+        setTimeout(() => {
+          document.getElementById('splash').style.display = 'none';
+        }, 1000);
+      }, 3000); // 3 secondes avant d’afficher le site
+    });
   </script>
 
 </body>
