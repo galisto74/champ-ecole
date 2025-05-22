@@ -78,8 +78,27 @@
   background-color: #1ebe5d;
 }
   </style>
+  <!-- Leaflet CSS -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-sA+e2u9S6VbX8S7l+6wO7ngQZ+V6VqDtP2ztz8U6jck="
+  crossorigin=""
+/>
+
+<!-- Leaflet JS -->
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-oQeTb7f5B8qbs7VAYSOQ9uyvRCRViw+L4CZV9LYC5tI="
+  crossorigin=""
+  defer
+></script>
 </head>
 <body>
+  <section id="carte">
+  <h2>Localisation du Champ</h2>
+  <div id="map" style="height: 400px; border-radius: 8px;"></div>
+</section>
 
   <header>
   <img src="Logo.png" alt="Logo du Champ École" style="max-height: 100px; margin-bottom: 1rem;">
@@ -129,5 +148,23 @@
     Nous écrire sur WhatsApp
   </a>
 </section>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var lat = 14.2244445;
+    var lon = -16.0586033;
+    var zoomLevel = 16;
+
+    var map = L.map('map').setView([lat, lon], zoomLevel);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    L.marker([lat, lon]).addTo(map)
+      .bindPopup('Champ École - Localisation')
+      .openPopup();
+  });
+</script>
 </body>
 </html>
