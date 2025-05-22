@@ -1,170 +1,148 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Champ École</title>
+
+  <!-- Style personnalisé -->
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
       margin: 0;
       padding: 0;
-      background-color: #f0f4f8;
+      background-color: #f4f4f4;
       color: #333;
     }
 
     header {
-      background-color: #2e7d32;
+      background-color: #2c3e50;
       color: white;
-      padding: 2rem;
+      padding: 20px 0;
       text-align: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 2.5em;
     }
 
     section {
-      padding: 2rem;
+      padding: 30px;
       max-width: 900px;
       margin: auto;
-      background: white;
-      border-radius: 8px;
-      margin-top: 2rem;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      background-color: white;
+      margin-bottom: 20px;
+      border-radius: 10px;
     }
 
     h2 {
-      color: #2e7d32;
-      margin-top: 0;
+      color: #2c3e50;
     }
 
-    ul {
-      padding-left: 1.5rem;
-    }
-
-    footer {
-      text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
-      background-color: #e0e0e0;
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 1.8em;
-      }
-
-      section {
-        padding: 1rem;
-      }
-    }
     .whatsapp-button {
-  display: inline-block;
-  background-color: #25D366;
-  color: white;
-  padding: 12px 20px;
-  margin-top: 10px;
-  border-radius: 5px;
-  font-size: 1em;
-  font-weight: bold;
-  text-decoration: none;
-  transition: background-color 0.3s ease;
-}
+      display: inline-block;
+      background-color: #25D366;
+      color: white;
+      padding: 12px 20px;
+      margin-top: 10px;
+      border-radius: 5px;
+      font-size: 1em;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
 
-.whatsapp-button:hover {
-  background-color: #1ebe5d;
-}
+    .whatsapp-button:hover {
+      background-color: #1ebe5d;
+    }
+
+    #map {
+      height: 400px;
+      border-radius: 8px;
+    }
   </style>
-  <!-- Leaflet CSS -->
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  integrity="sha256-sA+e2u9S6VbX8S7l+6wO7ngQZ+V6VqDtP2ztz8U6jck="
-  crossorigin=""
-/>
 
-<!-- Leaflet JS -->
-<script
-  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  integrity="sha256-oQeTb7f5B8qbs7VAYSOQ9uyvRCRViw+L4CZV9LYC5tI="
-  crossorigin=""
-  defer
-></script>
+  <!-- Leaflet (pour la carte) -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-sA+e2u9S6VbX8S7l+6wO7ngQZ+V6VqDtP2ztz8U6jck="
+    crossorigin=""
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-oQeTb7f5B8qbs7VAYSOQ9uyvRCRViw+L4CZV9LYC5tI="
+    crossorigin=""
+    defer
+  ></script>
 </head>
+
 <body>
-  <section id="carte">
-  <h2>Localisation du Champ</h2>
-  <div id="map" style="height: 400px; border-radius: 8px;"></div>
-</section>
 
   <header>
-  <img src="Logo.png" alt="Logo du Champ École" style="max-height: 100px; margin-bottom: 1rem;">
-  <h1>Champ École</h1>
-  <p>Un espace d’expérimentation et d’innovation agricole</p>
+    <h1>Champ École</h1>
   </header>
 
   <section id="presentation">
-  <img src="Logo.png" alt="Logo du Champ École" style="max-height: 100px; margin-bottom: 1rem;">
-  <h1>Champ École</h1>
-  <p>Un espace d’expérimentation et d’innovation agricole</p>
+    <h2>Présentation</h2>
+    <p>
+      Le Champ École est une initiative portée par des étudiants engagés pour expérimenter des pratiques agricoles durables. Il sert de lieu d’apprentissage, d’expérimentation et de démonstration.
+    </p>
   </section>
 
   <section id="membres">
     <h2>Les Membres</h2>
     <ul>
-      <li>Pierre – Coordinateur du projet</li>
-      <li>Madjiguene – Chargée de la communication</li>
-      <li>Ngagne – Responsable technique</li>
-      <li>katime – Gestion des cultures</li>
-      <li>Massamba – Responsable partenariat</li>
+      <li>Pierre - chef de projet</li>
+      <li>Madjiguene - Responsable comminication</li>
+      <li>baye - Responsable technique</li>
+      <li>Massamba - Responsable Partenariats</li>
+      <!-- Ajoute d’autres membres ici -->
     </ul>
   </section>
 
   <section id="serre">
     <h2>Le Projet de Serre Connectée</h2>
-    <p>Notre serre expérimentale est conçue pour être autonome et intelligente. Elle est équipée de capteurs Zigbee (température, humidité, sol), d’un Raspberry Pi et de Home Assistant pour permettre une surveillance à distance.</p>
-    <p><strong>Fonctionnalités prévues :</strong></p>
-    <ul>
-      <li>Suivi de l’humidité du sol et de l’air</li>
-      <li>Irrigation automatique selon les besoins des plantes</li>
-      <li>Contrôle à distance via une application mobile</li>
-    </ul>
-    <p><em>Dernière mise à jour : 22 mai 2025</em></p>
+    <p>
+      La serre du champ est connectée à des capteurs de température, d’humidité et d’irrigation automatique grâce à un Raspberry Pi et au système Home Assistant. Le tout est géré via une interface web simple à mettre à jour.
+    </p>
+    <p>
+      Ce projet évolue constamment et de nouvelles fonctionnalités seront ajoutées régulièrement.
+    </p>
   </section>
 
-  <footer>
-    © 2025 Champ École – Tous droits réservés
-  </footer>
+  <section id="carte">
+    <h2>Localisation du Champ</h2>
+    <div id="map"></div>
+  </section>
+
   <section id="contact">
-  <h2>Nous Contacter</h2>
-  <p>Tu veux en savoir plus ou collaborer avec nous ? N’hésite pas à nous écrire !</p>
+    <h2>Nous Contacter</h2>
+    <p>Tu veux en savoir plus ou collaborer avec nous ? N’hésite pas à nous écrire !</p>
 
-  <p><strong>Email :</strong> <a href="mailto:sunumbey@gmail.com">sunumbey@gmail.com</a></p>
+    <p><strong>Email :</strong> <a href="mailto:sunumbey@gmail.com">sunumbey@gmail.com</a></p>
 
-  <a href="https://wa.me/221771234567" target="_blank" class="whatsapp-button">
-    Nous écrire sur WhatsApp
-  </a>
-</section>
+    <a href="https://wa.me/221777934229" target="_blank" class="whatsapp-button">
+      Nous écrire sur WhatsApp
+    </a>
+  </section>
+
+  <!-- Script carte Leaflet -->
   <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var lat = 14.2244445;
-    var lon = -16.0586033;
-    var zoomLevel = 16;
+    document.addEventListener('DOMContentLoaded', function () {
+      var lat = 14.2244445;
+      var lon = -16.0586033;
+      var zoomLevel = 16;
 
-    var map = L.map('map').setView([lat, lon], zoomLevel);
+      var map = L.map('map').setView([lat, lon], zoomLevel);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '© OpenStreetMap'
-    }).addTo(map);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+      }).addTo(map);
 
-    L.marker([lat, lon]).addTo(map)
-      .bindPopup('Champ École - Localisation')
-      .openPopup();
-  });
-</script>
+      L.marker([lat, lon]).addTo(map)
+        .bindPopup('Champ École - Localisation')
+        .openPopup();
+    });
+  </script>
+
 </body>
 </html>
