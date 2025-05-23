@@ -16,11 +16,11 @@
       color: #333;
     }
 
-    /* Splash Screen (écran d’accueil) */
+    /* Splash Screen */
     #splash {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: #2c3e50;
+      background: #064420;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -33,7 +33,6 @@
       animation: bounce 2s ease infinite;
     }
 
-    /* Rebond logo et titre */
     @keyframes bounce {
       0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
       40% { transform: translateY(-15px); }
@@ -46,7 +45,7 @@
     }
 
     header {
-      background-color: #2c3e50;
+      background-color: #064420;
       color: white;
       padding: 20px 0;
       text-align: center;
@@ -62,7 +61,7 @@
     }
 
     h2 {
-      color: #2c3e50;
+      color: #064420;
       transition: transform 0.3s ease, color 0.3s ease;
     }
 
@@ -94,7 +93,6 @@
       border-radius: 8px;
     }
 
-    /* Animation fade-in */
     .fade-in {
       opacity: 0;
       transform: translateY(20px);
@@ -106,7 +104,6 @@
       transform: translateY(0);
     }
 
-    /* Masquer le contenu au départ */
     #main-content {
       opacity: 0;
       transition: opacity 1s ease;
@@ -114,6 +111,20 @@
 
     #main-content.visible {
       opacity: 1;
+    }
+
+    .blog-link {
+      display: block;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-top: 20px;
+      color: #064420;
+    }
+
+    .blog-link:hover {
+      text-decoration: underline;
+      color: #ff4500;
     }
   </style>
 
@@ -168,11 +179,12 @@
       <p><strong>Email :</strong> <a href="mailto:sunumbey@gmail.com">sunumbey@gmail.com</a></p>
       <a href="https://wa.me/221777934229" target="_blank" class="whatsapp-button">Nous écrire sur WhatsApp</a>
     </section>
+
+    <a href="blog/index.html" class="blog-link">Lire notre blog →</a>
   </div>
 
   <!-- Scripts -->
   <script>
-    // Carte Leaflet
     document.addEventListener('DOMContentLoaded', function () {
       var lat = 14.2244445;
       var lon = -16.0586033;
@@ -190,7 +202,6 @@
         .openPopup();
     });
 
-    // Apparition des sections au scroll
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -201,7 +212,6 @@
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-    // Splash screen timeout
     window.addEventListener('load', () => {
       setTimeout(() => {
         document.getElementById('splash').style.opacity = 0;
@@ -210,7 +220,7 @@
         setTimeout(() => {
           document.getElementById('splash').style.display = 'none';
         }, 1000);
-      }, 3000); // 3 secondes avant d’afficher le site
+      }, 3000);
     });
   </script>
 
