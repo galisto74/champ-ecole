@@ -1,77 +1,108 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Blog du Champ École</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog - Champ École</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #e0f7fa;
       margin: 0;
       padding: 0;
+      background-color: #f2f2f2;
       color: #333;
     }
 
-    header {
-      background-color: #064420;
-      color: white;
+    .banniere-blog {
+      position: relative;
       text-align: center;
-      padding: 20px 0;
-    }
-
-    header h1 {
-      margin: 0;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: auto;
+      background-color: #064420;
       padding: 20px;
+      color: white;
+      animation: fonduSlide 2s ease;
+    }
+
+    .banniere-blog img {
+      max-height: 100px;
+      animation: rebond 2s infinite ease-in-out;
+    }
+
+    .banniere-blog h1 {
+      margin: 10px 0 0;
+      font-size: 2em;
+    }
+
+    @keyframes rebond {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes fonduSlide {
+      0% { opacity: 0; transform: translateY(-30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .contenu {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
     }
 
     .article {
-      background-color: white;
-      padding: 15px;
-      margin-top: 20px;
-      border-left: 5px solid #064420;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 40px;
     }
 
     .article h2 {
-      margin-top: 0;
       color: #064420;
+      transition: color 0.3s ease;
     }
 
-    .back-link {
+    .article h2:hover {
+      color: #ff4500;
+    }
+
+    .article p {
+      line-height: 1.6;
+    }
+
+    a.retour {
       display: inline-block;
-      margin-top: 30px;
-      color: #064420;
+      margin: 20px;
       text-decoration: none;
+      color: #064420;
       font-weight: bold;
     }
 
-    .back-link:hover {
+    a.retour:hover {
       text-decoration: underline;
     }
   </style>
 </head>
+
 <body>
-
-  <header>
-    <h1>Blog du Champ École</h1>
-  </header>
-
-  <div class="container">
-    <div class="article">
-      <h2>Notre première plantation</h2>
-      <p><strong>Date :</strong> 15 mai 2025</p>
-      <p>Nous avons commencé la plantation de piment et de bissap sur notre champ expérimental. Le sol a été bien préparé grâce aux conseils de notre encadrant, et nous avons installé les premiers capteurs dans la serre.</p>
-    </div>
-
-    <a href="../index.html" class="back-link">← Retour à l'accueil</a>
+  <div class="banniere-blog">
+    <img src="../ton-Logo.png" alt="Logo Champ École">
+    <h1>Le Blog du Champ École</h1>
   </div>
 
+  <div class="contenu">
+    <div class="article">
+      <h2>Premier article : Lancement du Champ École</h2>
+      <p>
+        Le Champ École a démarré avec une forte mobilisation des étudiants. Ce projet vise à tester des méthodes agricoles durables et connectées. La première activité a été la construction de la serre...
+      </p>
+    </div>
+
+    <div class="article">
+      <h2>Deuxième article : Installation des capteurs</h2>
+      <p>
+        Nous avons installé les premiers capteurs Zigbee pour surveiller l'humidité du sol et la température. Grâce au Raspberry Pi, nous avons pu centraliser les données et les visualiser via Home Assistant.
+      </p>
+    </div>
+
+    <a class="retour" href="../index.html">← Retour à l'accueil</a>
+  </div>
 </body>
 </html>
