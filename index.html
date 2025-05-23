@@ -16,9 +16,8 @@
       color: #333;
     }
 
-    /* Bannière header */
     header {
-      background-color: #064420; /* vert foncé */
+      background-color: #064420;
       color: white;
       padding: 20px 0;
       text-align: center;
@@ -33,7 +32,6 @@
       cursor: default;
     }
 
-    /* Menu dans header */
     nav {
       margin-top: 10px;
     }
@@ -50,7 +48,6 @@
       text-decoration: underline;
     }
 
-    /* Splash Screen (écran d’accueil) */
     #splash {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -67,7 +64,6 @@
       animation: bounce 2s ease infinite;
     }
 
-    /* Rebond logo et titre */
     @keyframes bounce {
       0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
       40% { transform: translateY(-15px); }
@@ -121,7 +117,6 @@
       border-radius: 8px;
     }
 
-    /* Animation fade-in */
     .fade-in {
       opacity: 0;
       transform: translateY(20px);
@@ -133,7 +128,6 @@
       transform: translateY(0);
     }
 
-    /* Masquer le contenu au départ */
     #main-content {
       opacity: 0;
       transition: opacity 1s ease;
@@ -154,12 +148,12 @@
     <img src="Logo.png" alt="Logo" />
   </div>
 
-  <!-- Contenu principal -->
   <div id="main-content">
     <header>
       <h1>Champ École</h1>
       <nav>
         <a href="index.html">Accueil</a>
+        <a href="galerie.html">Galerie</a>
         <a href="blog/">Blog</a>
         <a href="#contact">Contact</a>
       </nav>
@@ -205,7 +199,6 @@
 
   <!-- Scripts -->
   <script>
-    // Carte Leaflet
     document.addEventListener('DOMContentLoaded', function () {
       var lat = 14.2244445;
       var lon = -16.0586033;
@@ -223,7 +216,6 @@
         .openPopup();
     });
 
-    // Apparition des sections au scroll
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -234,7 +226,6 @@
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-    // Splash screen timeout
     window.addEventListener('load', () => {
       setTimeout(() => {
         document.getElementById('splash').style.opacity = 0;
@@ -243,7 +234,7 @@
         setTimeout(() => {
           document.getElementById('splash').style.display = 'none';
         }, 1000);
-      }, 3000); // 3 secondes avant d’afficher le site
+      }, 3000);
     });
   </script>
 
