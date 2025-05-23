@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galerie – Champ École</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .galerie {
+      padding: 40px;
+      text-align: center;
+    }
+    .galerie h2 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+    .grille-photos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .grille-photos img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .grille-photos img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <section class="galerie">
+    <h2>Galerie du Champ École</h2>
+    <p>Quelques moments capturés pendant nos activités</p>
+    
+    <div class="grille-photos">
+      <img src="images/photo1.jpg" alt="Semis de piment">
+      <img src="images/photo2.jpg" alt="Mise en place de la serre">
+      <img src="images/photo3.jpg" alt="Formation des étudiants">
+      <img src="images/photo4.jpg" alt="Récolte collective">
+    </div>
+  </section>
+
+</body>
+</html>
