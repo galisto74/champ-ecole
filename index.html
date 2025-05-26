@@ -1,3 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Champ École</title>
+
+  <!-- Feuilles de style -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #e0f7fa;
+      color: #333;
+      opacity: 1;
+    }
+
+    /* Transitions douces */
+    body.fade-enter {
+      opacity: 0;
+      animation: fadeInPage 0.5s forwards;
+    }
+
+    body.fade-exit {
+      animation: fadeOutPage 0.4s forwards;
+    }
+
+    @keyframes fadeInPage {
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeOutPage {
+      to { opacity: 0; }
+    }
+
+    header {
+      background-color: #064420;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header h1 {
+      margin: 0;
+      animation: bounce 2s ease;
+      cursor: default;
+    }
+
+    nav {
+      margin-top: 10px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+      transition: text-decoration 0.3s;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    #splash {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #2c3e50;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 1s ease;
+    }
+
+    #splash img {
+      width: 150px;
+      animation: bounce 2s ease infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-15px); }
+      60% { transform: translateY(-7px); }
+    }
+
+    section {
+      padding: 30px;
+      max-width: 900px;
+      margin: auto;
+      background-color: white;
+      margin-bottom: 20px;
+      border-radius: 10px;
+    }
+
+    h2 {
+      color: #064420;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    h2:hover {
+      transform: scale(1.05);
+      color: #ff4500;
+    }
+
+    .whatsapp-button, .blog-button {
+      display: inline-block;
+      background-color: #25D366;
+      color: white;
+      padding: 12px 20px;
+      margin-top: 10px;
+      border-radius: 5px;
+      font-size: 1em;
+      font-weight: bold;
+      text-decoration: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .blog-button {
+      background-color: #064420;
+      margin-left: 10px;
+    }
+
+    .whatsapp-button:hover, .blog-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 10px currentColor;
+    }
+
+    #map {
+      height: 400px;
+      border-radius: 8px;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #main-content {
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    #main-content.visible {
+      opacity: 1;
+    }
+  </style>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+
 <body>
 
   <!-- Splash screen -->
@@ -8,9 +170,6 @@
   <div id="main-content">
     <header>
       <h1>Champ École</h1>
-      <div style="margin-top: 10px; font-size: 24px; color: white;">
-        <span id="morph" style="transition: opacity 0.6s ease;"></span>
-      </div>
       <nav>
         <a href="index.html">Accueil</a>
         <a href="galerie.html">Galerie</a>
@@ -59,7 +218,6 @@
 
   <!-- Scripts -->
   <script>
-    // Animation carte
     document.addEventListener('DOMContentLoaded', function () {
       var lat = 14.2244445;
       var lon = -16.0586033;
@@ -77,7 +235,6 @@
         .openPopup();
     });
 
-    // Animation apparition
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -88,7 +245,6 @@
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-    // Splash screen
     window.addEventListener('load', () => {
       setTimeout(() => {
         document.getElementById('splash').style.opacity = 0;
@@ -99,27 +255,7 @@
         }, 1000);
       }, 3000);
     });
-
-    // Morphing texte + son
-    const phrases = ["Étudiants", "Acteurs", "Idée", "Action"];
-    const morph = document.getElementById("morph");
-    let index = 0;
-
-    const sound = new Audio("morph.mp3");
-
-    function showNextWord() {
-      morph.style.opacity = 0;
-      setTimeout(() => {
-        morph.textContent = phrases[index];
-        sound.currentTime = 0;
-        sound.play();
-        morph.style.opacity = 1;
-        index = (index + 1) % phrases.length;
-      }, 300);
-    }
-
-    showNextWord();
-    setInterval(showNextWord, 4000);
   </script>
   <script src="transition.js"></script>
 </body>
+</html>
