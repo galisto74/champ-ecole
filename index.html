@@ -15,16 +15,15 @@
       background-color: #e0f7fa;
       color: #333;
       opacity: 1;
+      transition: opacity 0.4s ease;
     }
 
-    /* Transitions douces */
     body.fade-enter {
       opacity: 0;
-      animation: fadeInPage 0.5s forwards;
     }
 
     body.fade-exit {
-      animation: fadeOutPage 0.4s forwards;
+      opacity: 0;
     }
 
     @keyframes fadeInPage {
@@ -183,9 +182,7 @@
 
     <section class="fade-in" id="presentation">
       <h2 class="fade-in">Présentation</h2>
-      <p>
-        Le Champ École est une initiative portée par des étudiants engagés pour expérimenter des pratiques agricoles durables...
-      </p>
+      <p>Le Champ École est une initiative portée par des étudiants engagés pour expérimenter des pratiques agricoles durables...</p>
     </section>
 
     <section class="fade-in" id="membres">
@@ -200,9 +197,7 @@
 
     <section class="fade-in" id="serre">
       <h2 class="fade-in">Le Projet de Serre Connectée</h2>
-      <p>
-        La serre du champ est connectée à des capteurs de température, d’humidité...
-      </p>
+      <p>La serre du champ est connectée à des capteurs de température, d’humidité...</p>
     </section>
 
     <section class="fade-in" id="carte">
@@ -250,16 +245,22 @@
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-    // Splash screen
+    // Splash screen (ne s'affiche qu'une fois par session)
     window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.getElementById('splash').style.opacity = 0;
-        document.getElementById('splash').style.pointerEvents = 'none';
-        document.getElementById('main-content').classList.add('visible');
+      if (!sessionStorage.getItem('splashSeen')) {
         setTimeout(() => {
-          document.getElementById('splash').style.display = 'none';
-        }, 1000);
-      }, 3000);
+          document.getElementById('splash').style.opacity = 0;
+          document.getElementById('splash').style.pointerEvents = 'none';
+          document.getElementById('main-content').classList.add('visible');
+          setTimeout(() => {
+            document.getElementById('splash').style.display = 'none';
+          }, 1000);
+        }, 3000);
+        sessionStorage.setItem('splashSeen', 'true');
+      } else {
+        document.getElementById('splash').style.display = 'none';
+        document.getElementById('main-content').classList.add('visible');
+      }
     });
 
     // Morphing texte + son
@@ -283,5 +284,5 @@
     showNextWord();
     setInterval(showNextWord, 4000);
   </script>
-  <script src="transition.js"></script>
 </body>
+</html>
