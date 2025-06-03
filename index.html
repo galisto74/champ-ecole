@@ -5,65 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Champ École</title>
 
-  <!-- Feuilles de style -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Feuille de style intégrée -->
   <style>
-    body {
-      font-family: Arial, sans-serif;
+    * {
+      box-sizing: border-box;
+    }
+
+    body, html {
       margin: 0;
       padding: 0;
-      background-color: #e0f7fa;
-      color: #333;
-      opacity: 1;
-      transition: opacity 0.4s ease;
-    }
-
-    body.fade-enter {
-      opacity: 0;
-    }
-
-    body.fade-exit {
-      opacity: 0;
-    }
-
-    @keyframes fadeInPage {
-      to { opacity: 1; }
-    }
-
-    @keyframes fadeOutPage {
-      to { opacity: 0; }
-    }
-
-    header {
-      background-color: #064420;
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
       color: white;
-      padding: 20px 0;
-      text-align: center;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+      overflow-x: hidden;
     }
 
-    header h1 {
-      margin: 0;
-      animation: bounce 2s ease;
-      cursor: default;
+    /* Vidéo de fond */
+    #bg-video {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -2;
+      filter: blur(6px) brightness(0.5);
     }
 
-    nav {
-      margin-top: 10px;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 15px;
-      font-weight: bold;
-      transition: text-decoration 0.3s;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
+    /* Voile sombre par-dessus la vidéo */
+    #overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: -1;
     }
 
     #splash {
@@ -84,61 +59,76 @@
 
     @keyframes bounce {
       0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-      40% { transform: translateY(-15px); }
-      60% { transform: translateY(-7px); }
+      40% { transform: translateY(-20px); }
+      60% { transform: translateY(-10px); }
+    }
+
+    header {
+      text-align: center;
+      padding: 60px 20px 20px;
+    }
+
+    header h1 {
+      font-size: 3em;
+      margin-bottom: 0.3em;
+      color: #fff;
+    }
+
+    #morph {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #00e676;
+      transition: opacity 0.6s ease;
+    }
+
+    nav {
+      margin-top: 20px;
+    }
+
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      font-size: 1.1em;
+      position: relative;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 100%;
+      height: 2px;
+      background: #00e676;
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+      transform-origin: left;
+    }
+
+    nav a:hover::after {
+      transform: scaleX(1);
     }
 
     section {
+      max-width: 800px;
+      margin: 50px auto;
+      background: rgba(0, 0, 0, 0.6);
       padding: 30px;
-      max-width: 900px;
-      margin: auto;
-      background-color: white;
-      margin-bottom: 20px;
-      border-radius: 10px;
+      border-radius: 12px;
+      backdrop-filter: blur(5px);
+      transition: transform 0.5s, opacity 0.5s;
     }
 
     h2 {
-      color: #064420;
-      transition: transform 0.3s ease, color 0.3s ease;
-    }
-
-    h2:hover {
-      transform: scale(1.05);
-      color: #ff4500;
-    }
-
-    .whatsapp-button, .blog-button {
-      display: inline-block;
-      background-color: #25D366;
-      color: white;
-      padding: 12px 20px;
-      margin-top: 10px;
-      border-radius: 5px;
-      font-size: 1em;
-      font-weight: bold;
-      text-decoration: none;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .blog-button {
-      background-color: #064420;
-      margin-left: 10px;
-    }
-
-    .whatsapp-button:hover, .blog-button:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 10px currentColor;
-    }
-
-    #map {
-      height: 400px;
-      border-radius: 8px;
+      margin-top: 0;
+      color: #00e676;
     }
 
     .fade-in {
       opacity: 0;
       transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
     .fade-in.visible {
@@ -146,128 +136,97 @@
       transform: translateY(0);
     }
 
-    #main-content {
-      opacity: 0;
-      transition: opacity 1s ease;
+    .button {
+      display: inline-block;
+      background: #00e676;
+      color: black;
+      padding: 12px 20px;
+      margin: 20px 10px 0;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    #main-content.visible {
-      opacity: 1;
+    .button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px #00e676;
+    }
+
+    #map {
+      height: 400px;
+      border-radius: 10px;
+      margin-top: 20px;
     }
   </style>
 
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
 <body>
 
-  <!-- Splash screen -->
+  <!-- Vidéo de fond -->
+  <video autoplay muted loop id="bg-video">
+    <source src="background.mp4" type="video/mp4" />
+  </video>
+  <div id="overlay"></div>
+
+  <!-- Splash Screen -->
   <div id="splash">
     <img src="Logo.png" alt="Logo" />
   </div>
 
-  <div id="main-content">
-    <header>
-      <h1>Champ École</h1>
-      <div style="margin-top: 10px; font-size: 24px; color: white;">
-        <span id="morph" style="transition: opacity 0.6s ease;"></span>
-      </div>
-      <nav>
-        <a href="index.html">Accueil</a>
-        <a href="pages/galerie.html">Galerie</a>
-        <a href="blog/">Blog</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </header>
+  <!-- Contenu principal -->
+  <header>
+    <h1>Champ École</h1>
+    <div id="morph"></div>
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="pages/galerie.html">Galerie</a>
+      <a href="blog/">Blog</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-    <section class="fade-in" id="presentation">
-      <h2 class="fade-in">Présentation</h2>
-      <p>Le Champ École est une initiative portée par des étudiants engagés pour expérimenter des pratiques agricoles durables...</p>
-    </section>
+  <section class="fade-in">
+    <h2>Présentation</h2>
+    <p>Le Champ École est une initiative portée par des étudiants engagés pour expérimenter des pratiques agricoles durables...</p>
+  </section>
 
-    <section class="fade-in" id="membres">
-      <h2 class="fade-in">Les Membres du groupe Sunu Mbeye</h2>
-      <ul>
-        <li>Pierre - Chef de projet</li>
-        <li>Madjiguene - Responsable communication</li>
-        <li>Baye - Responsable technique</li>
-        <li>Massamba - Responsable partenariats</li>
-      </ul>
-    </section>
+  <section class="fade-in">
+    <h2>Les Membres du groupe Sunu Mbey</h2>
+    <ul>
+      <li>Pierre - Chef de projet</li>
+      <li>Madjiguene - Responsable communication</li>
+      <li>Baye - Responsable technique</li>
+      <li>Massamba - Responsable partenariats</li>
+    </ul>
+  </section>
 
-    <section class="fade-in" id="serre">
-      <h2 class="fade-in">Le Projet de Serre Connectée</h2>
-      <p>La serre du champ est connectée à des capteurs de température, d’humidité...</p>
-    </section>
+  <section class="fade-in">
+    <h2>Le Projet de Serre Connectée</h2>
+    <p>La serre du champ est connectée à des capteurs de température, d’humidité, etc., pour optimiser la production de manière autonome.</p>
+  </section>
 
-    <section class="fade-in" id="carte">
-      <h2 class="fade-in">Localisation du Champ</h2>
-      <div id="map"></div>
-    </section>
+  <section class="fade-in" id="carte">
+    <h2>Localisation du Champ</h2>
+    <div id="map"></div>
+  </section>
 
-    <section class="fade-in" id="contact">
-      <h2 class="fade-in">Nous Contacter</h2>
-      <p>Tu veux en savoir plus ou collaborer avec nous ?</p>
-      <p><strong>Email :</strong> <a href="mailto:sunumbey@gmail.com">sunumbey@gmail.com</a></p>
-      <a href="https://wa.me/221777934229" target="_blank" class="whatsapp-button">Nous écrire sur WhatsApp</a>
-      <a href="blog/" class="blog-button">Lire le Blog</a>
-    </section>
-  </div>
+  <section class="fade-in" id="contact">
+    <h2>Nous Contacter</h2>
+    <p>Email : <a href="mailto:sunumbey@gmail.com" style="color:#00e676;">sunumbey@gmail.com</a></p>
+    <a href="https://wa.me/221777934229" class="button" target="_blank">WhatsApp</a>
+    <a href="blog/" class="button">Lire le Blog</a>
+  </section>
 
   <!-- Scripts -->
   <script>
-    // Animation carte
-    document.addEventListener('DOMContentLoaded', function () {
-      var lat = 14.2244445;
-      var lon = -16.0586033;
-      var zoomLevel = 16;
-
-      var map = L.map('map').setView([lat, lon], zoomLevel);
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© OpenStreetMap'
-      }).addTo(map);
-
-      L.marker([lat, lon]).addTo(map)
-        .bindPopup('Champ École - Localisation')
-        .openPopup();
-    });
-
-    // Animation apparition
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-    // Splash screen (ne s'affiche qu'une fois par session)
-    window.addEventListener('load', () => {
-      if (!sessionStorage.getItem('splashSeen')) {
-        setTimeout(() => {
-          document.getElementById('splash').style.opacity = 0;
-          document.getElementById('splash').style.pointerEvents = 'none';
-          document.getElementById('main-content').classList.add('visible');
-          setTimeout(() => {
-            document.getElementById('splash').style.display = 'none';
-          }, 1000);
-        }, 3000);
-        sessionStorage.setItem('splashSeen', 'true');
-      } else {
-        document.getElementById('splash').style.display = 'none';
-        document.getElementById('main-content').classList.add('visible');
-      }
-    });
-
-    // Morphing texte + son
+    // Morph texte
     const phrases = ["E.D.D", "A.G.A.P", "G.C", "D.L"];
     const morph = document.getElementById("morph");
     let index = 0;
-
     const sound = new Audio("morph.mp3");
 
     function showNextWord() {
@@ -283,6 +242,43 @@
 
     showNextWord();
     setInterval(showNextWord, 4000);
+
+    // Fade-in animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Carte Leaflet
+    document.addEventListener('DOMContentLoaded', () => {
+      var map = L.map('map').setView([14.2244445, -16.0586033], 16);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+      }).addTo(map);
+      L.marker([14.2244445, -16.0586033]).addTo(map).bindPopup('Champ École - Localisation').openPopup();
+    });
+
+    // Splash screen
+    window.addEventListener('load', () => {
+      if (!sessionStorage.getItem('splashSeen')) {
+        setTimeout(() => {
+          document.getElementById('splash').style.opacity = 0;
+          document.getElementById('splash').style.pointerEvents = 'none';
+          setTimeout(() => {
+            document.getElementById('splash').style.display = 'none';
+          }, 1000);
+        }, 3000);
+        sessionStorage.setItem('splashSeen', 'true');
+      } else {
+        document.getElementById('splash').style.display = 'none';
+      }
+    });
   </script>
 </body>
 </html>
