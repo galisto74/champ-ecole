@@ -12,52 +12,64 @@
       padding: 0;
       background-color: #f1f8e9;
       color: #333;
-      transition: opacity 0.4s ease;
-    }
-
-    body.fade-enter {
-      opacity: 0;
-    }
-
-    body.fade-exit {
-      opacity: 0;
     }
 
     .galerie {
-      padding: 40px;
+      padding: 40px 20px;
       text-align: center;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .galerie h2 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      color: #064420;
+    }
+
+    .galerie p {
+      font-size: 1.2em;
+      color: #555;
     }
 
     .grille-photos {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
-      margin-top: 20px;
+      margin-top: 40px;
+    }
+
+    .photo {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      cursor: pointer;
     }
 
     .photo img {
       width: 100%;
       height: auto;
+      display: block;
       border-radius: 10px;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .photo img:hover {
+    .photo:hover img {
       transform: scale(1.05);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     }
 
     .nom {
-      margin-top: 8px;
-      font-weight: 600;
+      margin-top: 10px;
+      font-weight: bold;
       font-size: 1.1em;
       color: #333;
     }
 
     .retour-accueil {
       display: inline-block;
-      margin-top: 30px;
-      padding: 12px 20px;
+      margin-top: 40px;
+      padding: 12px 24px;
       background-color: #064420;
       color: white;
       text-decoration: none;
@@ -67,8 +79,45 @@
     }
 
     .retour-accueil:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 10px #064420;
+      transform: scale(1.08);
+      box-shadow: 0 0 12px #064420;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      display: none;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px white;
+    }
+
+    .lightbox:target {
+      display: flex;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 40px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .lightbox-close:hover {
+      color: #f44336;
     }
   </style>
 </head>
@@ -79,26 +128,44 @@
     <p>Quelques photos de nos membres et des activités</p>
 
     <div class="grille-photos">
-      <div class="photo">
+      <a href="#img1" class="photo">
         <img src="/champ-ecole/images/IMG_0660.jpeg" alt="Pierre Dominique Tendeng" />
         <p class="nom">Pierre Dominique Tendeng</p>
-      </div>
-      <div class="photo">
+      </a>
+      <a href="#img2" class="photo">
         <img src="/champ-ecole/images/Madjiguene.jpeg" alt="Madjiguéne Diakhaté" />
         <p class="nom">Madjiguéne Diakhaté</p>
-      </div>
-      <div class="photo">
+      </a>
+      <a href="#img3" class="photo">
         <img src="/champ-ecole/images/Massamba.jpeg" alt="Massamba Dieng" />
         <p class="nom">Massamba Dieng</p>
-      </div>
-      <div class="photo">
+      </a>
+      <a href="#img4" class="photo">
         <img src="/champ-ecole/images/Baye.jpeg" alt="Baye Dieng" />
         <p class="nom">Baye Dieng</p>
-      </div>
+      </a>
     </div>
 
     <a href="/champ-ecole/index.html" class="retour-accueil">Retour à l'accueil</a>
   </section>
+
+  <!-- Lightboxes -->
+  <div id="img1" class="lightbox">
+    <a href="#" class="lightbox-close">&times;</a>
+    <img src="/champ-ecole/images/IMG_0660.jpeg" alt="Pierre Dominique Tendeng">
+  </div>
+  <div id="img2" class="lightbox">
+    <a href="#" class="lightbox-close">&times;</a>
+    <img src="/champ-ecole/images/Madjiguene.jpeg" alt="Madjiguéne Diakhaté">
+  </div>
+  <div id="img3" class="lightbox">
+    <a href="#" class="lightbox-close">&times;</a>
+    <img src="/champ-ecole/images/Massamba.jpeg" alt="Massamba Dieng">
+  </div>
+  <div id="img4" class="lightbox">
+    <a href="#" class="lightbox-close">&times;</a>
+    <img src="/champ-ecole/images/Baye.jpeg" alt="Baye Dieng">
+  </div>
 
   <script src="transition.js"></script>
 </body>
