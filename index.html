@@ -245,7 +245,7 @@
 <body>
   <div id="stars"></div>
   <div id="sun"></div>
-  <div id="theme-toggle" title="Changer le mode">🌞</div>
+  <div id="theme-toggle" title="Changer le mode">🌝</div>
 
   <div id="main-content">
     <header>
@@ -313,7 +313,7 @@
       const body = document.body;
 
       function updateIcon() {
-        toggle.textContent = body.classList.contains('light') ? '🌙' : '🌞';
+        toggle.textContent = body.classList.contains('light') ? '🌚' : '🌝';
       }
 
       toggle.addEventListener('click', () => {
