@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Champ École</title>
-
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <style>
@@ -21,7 +20,6 @@
       color: white;
       background-color: black;
       animation: fadeIn 1.5s ease-in;
-      transition: background-color 0.6s ease, color 0.6s ease;
     }
 
     @keyframes fadeIn {
@@ -83,19 +81,6 @@
       border-radius: 50%;
       box-shadow: 0 0 15px yellow;
       z-index: 10;
-      transition: transform 1s ease, opacity 1s ease;
-      transform: scale(0.5);
-      opacity: 0;
-    }
-
-    body.light #sun {
-      display: block;
-      animation: sunPop 1s ease forwards;
-    }
-
-    @keyframes sunPop {
-      0% { transform: scale(0.5); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
     }
 
     #main-content {
@@ -136,13 +121,12 @@
       background-color: rgba(0, 0, 0, 0.6);
       padding: 25px;
       border-radius: 15px;
-      transition: background-color 0.6s ease, color 0.6s ease;
+      transition: background-color 0.3s;
     }
 
     h2 {
       color: #ffcc00;
       margin-bottom: 15px;
-      transition: color 0.6s ease;
     }
 
     #map {
@@ -173,10 +157,6 @@
       margin-left: 10px;
     }
 
-    a {
-      color: #fff;
-    }
-
     .whatsapp-float {
       position: fixed;
       bottom: 20px;
@@ -197,6 +177,7 @@
       transform: scale(1.1);
     }
 
+    /* Bouton thème avec emoji + animation */
     #theme-toggle {
       position: fixed;
       top: 20px;
@@ -206,26 +187,30 @@
       border-radius: 50%;
       cursor: pointer;
       z-index: 1000;
-      font-size: 28px;
-      line-height: 50px;
-      text-align: center;
-      transition: background 0.4s ease, transform 0.4s ease, color 0.4s ease;
-      background: #FFD700;
-      color: black;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #FFD700;
+      color: #fff;
       box-shadow: 0 0 10px #FFD700;
-      user-select: none;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
 
-    #theme-toggle:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 20px #FFD700;
+    #theme-toggle.animate {
+      animation: bounce 0.6s ease;
     }
 
-    /* Quand mode clair actif (nuit) → lune bleue */
+    @keyframes bounce {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.2); }
+      60% { transform: scale(0.95); }
+      100% { transform: scale(1); }
+    }
+
     body.light #theme-toggle {
-      background: #001f3f;
-      color: white;
-      box-shadow: 0 0 10px #339CFF;
+      background-color: #2c3e50;
+      box-shadow: 0 0 10px #2c3e50;
     }
 
     /* Mode clair */
@@ -250,25 +235,17 @@
       display: none;
     }
 
-    /* Animation bouton rotation */
-    @keyframes rotateButton {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    #theme-toggle.animate {
-      animation: rotateButton 0.6s ease-in-out;
+    body.light #sun {
+      display: block;
     }
   </style>
-
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
-<body>
 
-  <!-- Fond étoilé + soleil -->
+<body>
   <div id="stars"></div>
   <div id="sun"></div>
-  <div id="theme-toggle" title="Changer le mode">☀️</div>
+  <div id="theme-toggle" title="Changer le mode">🌞</div>
 
   <div id="main-content">
     <header>
@@ -321,24 +298,33 @@
     document.addEventListener('DOMContentLoaded', function () {
       const lat = 14.2244445;
       const lon = -16.0586033;
-      const zoomLevel = 16;
-
-      const map = L.map('map').setView([lat, lon], zoomLevel);
+      const map = L.map('map').setView([lat, lon], 16);
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© OpenStreetMap'
       }).addTo(map);
 
+      L.marker([lat, lon]).addTo(map)
+        .bindPopup('Champ École - Localisation')
+        .openPopup();
+
       const toggle = document.getElementById('theme-toggle');
-      const sun = document.getElementById('sun');
-      const stars = document.getElementById('stars');
       const body = document.body;
 
-      // Fonction pour activer le mode clair/sombre
+      function updateIcon() {
+        toggle.textContent = body.classList.contains('light') ? '🌙' : '🌞';
+      }
+
       toggle.addEventListener('click', () => {
         body.classList.toggle('light');
-        const isLight = body.classList.contains('light');
-        
-        toggle.innerHTML = isLight ? '🌙' : '☀️';
-       
+        updateIcon();
+        toggle.classList.add('animate');
+        setTimeout(() => toggle.classList.remove('animate'), 600);
+      });
+
+      updateIcon(); // initial
+    });
+  </script>
+</body>
+</html>
