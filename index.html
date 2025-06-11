@@ -5,11 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Champ École</title>
 
-  <!-- Feuille de style Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <style>
-    /* Réinitialisation */
     * {
       margin: 0;
       padding: 0;
@@ -25,35 +23,67 @@
       animation: fadeIn 1.5s ease-in;
     }
 
-    /* Animation d’apparition */
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
     }
 
-    /* Vidéo de fond floutée */
-    #background-video {
-      position: fixed;
-      top: 0;
-      left: 0;
-      min-width: 100%;
-      min-height: 100%;
-      object-fit: cover;
-      z-index: -2;
-      filter: blur(8px) brightness(0.6);
-    }
-
-    #video-overlay {
+    /* Fond étoilé */
+    #stars {
+      display: block;
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.4);
-      z-index: -1;
+      z-index: 0;
+      pointer-events: none;
     }
 
-    /* Contenu principal */
+    #stars::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1px;
+      height: 1px;
+      background: white;
+      box-shadow:
+        50px 80px white,
+        150px 200px white,
+        300px 150px white,
+        400px 250px white,
+        600px 200px white,
+        750px 120px white,
+        900px 170px white,
+        1050px 220px white,
+        1200px 100px white,
+        1350px 180px white,
+        1500px 140px white,
+        1650px 230px white,
+        1800px 160px white,
+        1950px 190px white;
+      animation: twinkle 2s infinite alternate;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.7; }
+    }
+
+    #sun {
+      display: none;
+      position: fixed;
+      top: 25px;
+      left: 25px;
+      width: 30px;
+      height: 30px;
+      background: yellow;
+      border-radius: 50%;
+      box-shadow: 0 0 15px yellow;
+      z-index: 10;
+    }
+
     #main-content {
       position: relative;
       z-index: 1;
@@ -100,14 +130,12 @@
       margin-bottom: 15px;
     }
 
-    /* Carte */
     #map {
       height: 400px;
       border-radius: 10px;
       margin-top: 15px;
     }
 
-    /* Boutons */
     .button {
       display: inline-block;
       background-color: #25D366;
@@ -134,7 +162,6 @@
       color: #fff;
     }
 
-    /* Bouton WhatsApp flottant */
     .whatsapp-float {
       position: fixed;
       bottom: 20px;
@@ -155,7 +182,6 @@
       transform: scale(1.1);
     }
 
-    /* Bascule jour/nuit */
     #theme-toggle {
       position: fixed;
       top: 20px;
@@ -173,70 +199,6 @@
     #theme-toggle:hover {
       transform: scale(1.1);
       box-shadow: 0 0 20px #FFD700;
-    }
-
-    #sun {
-      display: none;
-      position: fixed;
-      top: 25px;
-      left: 25px;
-      width: 20px;
-      height: 20px;
-      background: yellow;
-      border-radius: 50%;
-      box-shadow: 0 0 15px yellow;
-      z-index: 999;
-    }
-
-    /* Fond étoilé en CSS */
-    #stars {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: transparent;
-      z-index: -1;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    /* Étoiles avec box-shadow */
-    #stars::before {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 2000px;
-      height: 2000px;
-      background: transparent;
-      box-shadow:
-        100px 200px white,
-        300px 400px white,
-        500px 150px white,
-        700px 300px white,
-        900px 250px white,
-        1100px 450px white,
-        1300px 350px white,
-        1500px 200px white,
-        1700px 400px white,
-        1900px 300px white;
-      border-radius: 50%;
-      animation: twinkle 3s infinite alternate;
-    }
-
-    /* Animation scintillement */
-    @keyframes twinkle {
-      0% {
-        opacity: 0.3;
-      }
-      50% {
-        opacity: 1;
-      }
-      100% {
-        opacity: 0.3;
-      }
     }
 
     /* Mode clair */
@@ -261,26 +223,25 @@
       background: #2c3e50;
       box-shadow: 0 0 10px #2c3e50;
     }
+
+    body.light #stars {
+      display: none;
+    }
+
+    body.light #sun {
+      display: block;
+    }
   </style>
 
-  <!-- Script Leaflet -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
 
-  <!-- Vidéo de fond -->
-  <video autoplay muted loop id="background-video">
-    <source src="background.mp4" type="video/mp4" />
-    Votre navigateur ne supporte pas la lecture de vidéos HTML5.
-  </video>
-  <div id="video-overlay"></div>
-
-  <!-- Éléments pour le thème -->
-  <div id="theme-toggle" title="Changer le mode"></div>
+  <!-- Fond étoilé -->
   <div id="stars"></div>
   <div id="sun"></div>
+  <div id="theme-toggle" title="Changer le mode"></div>
 
-  <!-- Contenu principal -->
   <div id="main-content">
     <header>
       <img src="Logo.png" alt="Logo Champ École" />
@@ -326,12 +287,8 @@
     </section>
   </div>
 
-  <!-- Bouton WhatsApp flottant -->
-  <a href="https://wa.me/221777934229" target="_blank" class="whatsapp-float" title="Contact WhatsApp">
-    📞
-  </a>
+  <a href="https://wa.me/221777934229" target="_blank" class="whatsapp-float" title="Contact WhatsApp">📞</a>
 
-  <!-- Script carte et bouton thème -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const lat = 14.2244445;
@@ -349,7 +306,6 @@
         .bindPopup('Champ École - Localisation')
         .openPopup();
 
-      // Script bascule thème
       const toggle = document.getElementById('theme-toggle');
       const sun = document.getElementById('sun');
       const stars = document.getElementById('stars');
