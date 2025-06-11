@@ -1,3 +1,4 @@
+<!-- Remplace ton code HTML par ce code mis à jour -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -82,6 +83,15 @@
       border-radius: 50%;
       box-shadow: 0 0 15px yellow;
       z-index: 10;
+      transition: transform 1s ease, opacity 1s ease;
+      transform: scale(0.5);
+      opacity: 0;
+    }
+
+    body.light #sun {
+      display: block;
+      transform: scale(1);
+      opacity: 1;
     }
 
     #main-content {
@@ -188,17 +198,28 @@
       left: 20px;
       width: 50px;
       height: 50px;
-      background: linear-gradient(to bottom, #FFD700, #FFA500);
       border-radius: 50%;
-      box-shadow: 0 0 10px #FFD700;
       cursor: pointer;
       z-index: 1000;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      font-size: 28px;
+      line-height: 50px;
+      text-align: center;
+      transition: background 0.4s ease, transform 0.4s ease, color 0.4s ease;
+      background: #FFD700;
+      color: black;
+      box-shadow: 0 0 10px #FFD700;
     }
 
     #theme-toggle:hover {
       transform: scale(1.1);
       box-shadow: 0 0 20px #FFD700;
+    }
+
+    /* Quand mode clair actif (nuit) → lune bleue */
+    body.light #theme-toggle {
+      background: #001f3f;
+      color: white;
+      box-shadow: 0 0 10px #339CFF;
     }
 
     /* Mode clair */
@@ -219,17 +240,8 @@
       color: #25D366;
     }
 
-    body.light #theme-toggle {
-      background: #2c3e50;
-      box-shadow: 0 0 10px #2c3e50;
-    }
-
     body.light #stars {
       display: none;
-    }
-
-    body.light #sun {
-      display: block;
     }
   </style>
 
@@ -237,10 +249,10 @@
 </head>
 <body>
 
-  <!-- Fond étoilé -->
+  <!-- Fond étoilé + soleil -->
   <div id="stars"></div>
   <div id="sun"></div>
-  <div id="theme-toggle" title="Changer le mode"></div>
+  <div id="theme-toggle" title="Changer le mode">☀️</div>
 
   <div id="main-content">
     <header>
@@ -302,10 +314,6 @@
         attribution: '© OpenStreetMap'
       }).addTo(map);
 
-      L.marker([lat, lon]).addTo(map)
-        .bindPopup('Champ École - Localisation')
-        .openPopup();
-
       const toggle = document.getElementById('theme-toggle');
       const sun = document.getElementById('sun');
       const stars = document.getElementById('stars');
@@ -313,11 +321,13 @@
       toggle.addEventListener('click', () => {
         document.body.classList.toggle('light');
         const isLight = document.body.classList.contains('light');
+        toggle.innerHTML = isLight ? '🌚' : '🌝';
         sun.style.display = isLight ? 'block' : 'none';
         stars.style.display = isLight ? 'none' : 'block';
       });
 
-      // Mode sombre par défaut
+      // Initialisation en mode sombre
+      toggle.innerHTML = '☀️';
       stars.style.display = 'block';
     });
   </script>
