@@ -175,20 +175,9 @@
       box-shadow: 0 0 20px #FFD700;
     }
 
-    /* Soleil et étoiles avec fondu */
-    #sun, #stars {
-      opacity: 0;
-      transition: opacity 0.5s ease;
-      pointer-events: none;
-      position: fixed;
-      z-index: 999;
-    }
-
-    #sun.visible, #stars.visible {
-      opacity: 1;
-    }
-
     #sun {
+      display: none;
+      position: fixed;
       top: 25px;
       left: 25px;
       width: 20px;
@@ -196,23 +185,58 @@
       background: yellow;
       border-radius: 50%;
       box-shadow: 0 0 15px yellow;
+      z-index: 999;
     }
 
+    /* Fond étoilé en CSS */
     #stars {
+      display: none;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: url('img/stars.png');
-      background-size: cover;
-      opacity: 0.2;
+      background: transparent;
       z-index: -1;
-      animation: twinkle 3s infinite;
+      pointer-events: none;
+      overflow: hidden;
     }
 
+    /* Étoiles avec box-shadow */
+    #stars::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 2000px;
+      height: 2000px;
+      background: transparent;
+      box-shadow:
+        100px 200px white,
+        300px 400px white,
+        500px 150px white,
+        700px 300px white,
+        900px 250px white,
+        1100px 450px white,
+        1300px 350px white,
+        1500px 200px white,
+        1700px 400px white,
+        1900px 300px white;
+      border-radius: 50%;
+      animation: twinkle 3s infinite alternate;
+    }
+
+    /* Animation scintillement */
     @keyframes twinkle {
-      0%, 100% { opacity: 0.2; }
-      50% { opacity: 0.4; }
+      0% {
+        opacity: 0.3;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0.3;
+      }
     }
 
     /* Mode clair */
@@ -252,7 +276,7 @@
   <div id="video-overlay"></div>
 
   <!-- Éléments pour le thème -->
-  <div id="theme-toggle" title="Changer le mode" aria-label="Changer le mode jour/nuit"></div>
+  <div id="theme-toggle" title="Changer le mode"></div>
   <div id="stars"></div>
   <div id="sun"></div>
 
@@ -299,7 +323,6 @@
       <p><strong>Email :</strong> <a href="mailto:sunumbey@gmail.com">sunumbey@gmail.com</a></p>
       <a href="https://wa.me/221777934229" target="_blank" class="button">Nous écrire sur WhatsApp</a>
       <a href="blog/" class="button blog-button">Lire le Blog</a>
-      <!-- https://github.com/galisto74/champ-ecole/edit/main/index.html -->
     </section>
   </div>
 
@@ -331,25 +354,16 @@
       const sun = document.getElementById('sun');
       const stars = document.getElementById('stars');
 
-      // Lire la préférence enregistrée
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'light') {
-        document.body.classList.add('light');
-        sun.classList.add('visible');
-        stars.classList.remove('visible');
-      } else {
-        stars.classList.add('visible');
-      }
-
       toggle.addEventListener('click', () => {
         document.body.classList.toggle('light');
         const isLight = document.body.classList.contains('light');
+        sun.style.display = isLight ? 'block' : 'none';
+        stars.style.display = isLight ? 'none' : 'block';
+      });
 
-        if (isLight) {
-          sun.classList.add('visible');
-          stars.classList.remove('visible');
-          localStorage.setItem('theme', 'light');
-        } else {
-          sun.classList.remove('visible');
-          stars.classList.add('visible');
-          local
+      // Mode sombre par défaut
+      stars.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
