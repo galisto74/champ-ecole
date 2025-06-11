@@ -175,9 +175,20 @@
       box-shadow: 0 0 20px #FFD700;
     }
 
-    #sun {
-      display: none;
+    /* Soleil et étoiles avec fondu */
+    #sun, #stars {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
       position: fixed;
+      z-index: 999;
+    }
+
+    #sun.visible, #stars.visible {
+      opacity: 1;
+    }
+
+    #sun {
       top: 25px;
       left: 25px;
       width: 20px;
@@ -185,12 +196,11 @@
       background: yellow;
       border-radius: 50%;
       box-shadow: 0 0 15px yellow;
-      z-index: 999;
     }
 
     #stars {
-      display: none;
-      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       background: url('img/stars.png');
@@ -242,7 +252,7 @@
   <div id="video-overlay"></div>
 
   <!-- Éléments pour le thème -->
-  <div id="theme-toggle" title="Changer le mode"></div>
+  <div id="theme-toggle" title="Changer le mode" aria-label="Changer le mode jour/nuit"></div>
   <div id="stars"></div>
   <div id="sun"></div>
 
@@ -288,7 +298,8 @@
       <p>Tu veux en savoir plus ou collaborer avec nous ?</p>
       <p><strong>Email :</strong> <a href="mailto:sunumbey@gmail.com">sunumbey@gmail.com</a></p>
       <a href="https://wa.me/221777934229" target="_blank" class="button">Nous écrire sur WhatsApp</a>
-      <a href="blog/" class="button blog-button">Lire le Blog</a>https://github.com/galisto74/champ-ecole/edit/main/index.html
+      <a href="blog/" class="button blog-button">Lire le Blog</a>
+      <!-- https://github.com/galisto74/champ-ecole/edit/main/index.html -->
     </section>
   </div>
 
@@ -320,16 +331,25 @@
       const sun = document.getElementById('sun');
       const stars = document.getElementById('stars');
 
+      // Lire la préférence enregistrée
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'light') {
+        document.body.classList.add('light');
+        sun.classList.add('visible');
+        stars.classList.remove('visible');
+      } else {
+        stars.classList.add('visible');
+      }
+
       toggle.addEventListener('click', () => {
         document.body.classList.toggle('light');
         const isLight = document.body.classList.contains('light');
-        sun.style.display = isLight ? 'block' : 'none';
-        stars.style.display = isLight ? 'none' : 'block';
-      });
 
-      // Mode sombre par défaut
-      stars.style.display = 'block';
-    });
-  </script>
-</body>
-</html>
+        if (isLight) {
+          sun.classList.add('visible');
+          stars.classList.remove('visible');
+          localStorage.setItem('theme', 'light');
+        } else {
+          sun.classList.remove('visible');
+          stars.classList.add('visible');
+          local
