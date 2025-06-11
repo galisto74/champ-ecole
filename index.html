@@ -154,6 +154,79 @@
     .whatsapp-float:hover {
       transform: scale(1.1);
     }
+
+    /* Bascule jour/nuit */
+    #theme-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(to bottom, #FFD700, #FFA500);
+      border-radius: 50%;
+      box-shadow: 0 0 10px #FFD700;
+      cursor: pointer;
+      z-index: 1000;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    #theme-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px #FFD700;
+    }
+
+    #sun {
+      display: none;
+      position: fixed;
+      top: 25px;
+      left: 25px;
+      width: 20px;
+      height: 20px;
+      background: yellow;
+      border-radius: 50%;
+      box-shadow: 0 0 15px yellow;
+      z-index: 999;
+    }
+
+    #stars {
+      display: none;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: url('img/stars.png');
+      background-size: cover;
+      opacity: 0.2;
+      z-index: -1;
+      animation: twinkle 3s infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 0.4; }
+    }
+
+    /* Mode clair */
+    body.light {
+      background-color: white;
+      color: black;
+    }
+
+    body.light section {
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    body.light nav a {
+      color: black;
+    }
+
+    body.light nav a:hover {
+      color: #25D366;
+    }
+
+    body.light #theme-toggle {
+      background: #2c3e50;
+      box-shadow: 0 0 10px #2c3e50;
+    }
   </style>
 
   <!-- Script Leaflet -->
@@ -167,6 +240,11 @@
     Votre navigateur ne supporte pas la lecture de vidéos HTML5.
   </video>
   <div id="video-overlay"></div>
+
+  <!-- Éléments pour le thème -->
+  <div id="theme-toggle" title="Changer le mode"></div>
+  <div id="stars"></div>
+  <div id="sun"></div>
 
   <!-- Contenu principal -->
   <div id="main-content">
@@ -210,7 +288,7 @@
       <p>Tu veux en savoir plus ou collaborer avec nous ?</p>
       <p><strong>Email :</strong> <a href="mailto:sunumbey@gmail.com">sunumbey@gmail.com</a></p>
       <a href="https://wa.me/221777934229" target="_blank" class="button">Nous écrire sur WhatsApp</a>
-      <a href="blog/" class="button blog-button">Lire le Blog</a>
+      <a href="blog/" class="button blog-button">Lire le Blog</a>https://github.com/galisto74/champ-ecole/edit/main/index.html
     </section>
   </div>
 
@@ -219,7 +297,7 @@
     📞
   </a>
 
-  <!-- Script carte -->
+  <!-- Script carte et bouton thème -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const lat = 14.2244445;
@@ -236,6 +314,21 @@
       L.marker([lat, lon]).addTo(map)
         .bindPopup('Champ École - Localisation')
         .openPopup();
+
+      // Script bascule thème
+      const toggle = document.getElementById('theme-toggle');
+      const sun = document.getElementById('sun');
+      const stars = document.getElementById('stars');
+
+      toggle.addEventListener('click', () => {
+        document.body.classList.toggle('light');
+        const isLight = document.body.classList.contains('light');
+        sun.style.display = isLight ? 'block' : 'none';
+        stars.style.display = isLight ? 'none' : 'block';
+      });
+
+      // Mode sombre par défaut
+      stars.style.display = 'block';
     });
   </script>
 </body>
